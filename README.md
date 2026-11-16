@@ -19,7 +19,7 @@ Partir de una implementación serial correcta del filtro Sobel, construir una ve
 
 ### Etapa final — rotación
 - Samuel: implementador. Integró la versión paralela, las pruebas de correctitud y el benchmark reproducible.
-- Miguel: medidor. Ejecutará la validación y las mediciones finales en su máquina y revisará los resultados que se usarán en el informe.
+- Miguel: medidor. Ejecutó la validación y las mediciones finales en su máquina y revisó los resultados que se usarán en el informe.
 
 ## Estructura
 
