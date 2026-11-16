@@ -4,6 +4,7 @@ import numpy as np
 
 from src.referencia import sobel_numpy
 from src.v0_serial import crear_imagen_prueba, sobel_serial
+from src.v1_prange import sobel_prange
 
 
 RTOL = 1e-10
@@ -15,24 +16,42 @@ def verificar(n):
     imagen = crear_imagen_prueba(n)
 
     esperado = sobel_numpy(imagen)
-    obtenido = sobel_serial(imagen)
+    obtenido_serial = sobel_serial(imagen)
+    obtenido_prange = sobel_prange(imagen)
 
-    error_max = float(np.max(np.abs(obtenido - esperado)))
-    correcto = np.allclose(
-        obtenido,
+    error_serial = float(np.max(np.abs(obtenido_serial - esperado)))
+    error_prange = float(np.max(np.abs(obtenido_prange - esperado)))
+
+    correcto_serial = np.allclose(
+        obtenido_serial,
+        esperado,
+        rtol=RTOL,
+        atol=ATOL,
+    )
+
+    correcto_prange = np.allclose(
+        obtenido_prange,
         esperado,
         rtol=RTOL,
         atol=ATOL,
     )
 
     print(
-        f"n={n:4d}  correcto={correcto}  "
-        f"error_max={error_max:.3e}"
+        f"n={n:4d}  "
+        f"serial={correcto_serial}  "
+        f"prange={correcto_prange}  "
+        f"error_serial={error_serial:.3e}  "
+        f"error_prange={error_prange:.3e}"
     )
 
-    if not correcto:
+    if not correcto_serial:
         raise AssertionError(
             f"v0_serial no coincide con la referencia para n={n}"
+        )
+
+    if not correcto_prange:
+        raise AssertionError(
+            f"v1_prange no coincide con la referencia para n={n}"
         )
 
 
@@ -44,7 +63,7 @@ def main():
     for n in TAMANOS:
         verificar(n)
 
-    print("PASS: v0_serial coincide con la referencia")
+    print("PASS: v0_serial y v1_prange coinciden con la referencia")
 
 
 if __name__ == "__main__":
